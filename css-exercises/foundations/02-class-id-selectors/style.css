@@ -1,0 +1,19 @@
+.pinkred {
+  background-color: lightcoral;
+  font-family: Verdana, sans-serif;
+}
+
+.font24 {
+  font-size: 24px;
+}
+
+#bluedude {
+  color: blue;
+  font-size: 36px;
+}
+
+#greenguy {
+  background-color: lightgreen;
+  font-size: 24px;
+  font-weight: bold;
+}

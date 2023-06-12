@@ -1,0 +1,48 @@
+body {
+  margin: 16px 15%;
+}
+
+body > * {
+  margin: 12px;
+}
+
+button {
+  padding: 48px;
+}
+
+p {
+  margin: 8px 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.running-score {
+  font-size: 48px;
+  font-family: sans-serif;
+}
+
+.displays {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.winner-display,
+.results-display {
+  text-align: center;
+}

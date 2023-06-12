@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.calculator-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.calculator {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    "display display display display"
+    "seven eight nine clear"
+    "four five six addition"
+    "four five six subtraction"
+    "one two three mult"
+    "one two three divide"
+    "zer zer zer equals";
+    gap: 4px;
+    padding: 10px;
+    border: 1px solid gray;
+}
+
+.calculator > * {
+    padding: 24px;
+}
+
+.calculator > .display {
+    grid-area: display;
+    text-align: right;
+}
+
+.calculator > .clear {
+    grid-area: clear;
+}
+
+.calculator > .addition {
+    grid-area: addition;
+}
+
+.calculator > .subtraction {
+    grid-area: subtraction;
+}
+
+.calculator > .mult {
+    grid-area: mult;
+}
+
+.calculator > .divide {
+    grid-area: divide;
+    
+}
+
+.calculator > .equals {
+    grid-area: equals;
+}
+
+.calculator > .zero {
+    grid-area: zer;
+}
+
+.calculator > .one {
+    grid-area: one;
+}
+
+.calculator > .two {
+    grid-area: two;
+}
+
+.calculator > .three {
+    grid-area: three;
+}
+
+.calculator > .four {
+    grid-area: four;
+}
+
+.calculator > .five {
+    grid-area: five;
+}
+
+.calculator > .six {
+    grid-area: six;
+}
+
+.calculator > .seven {
+    grid-area: seven;
+}
+
+.calculator > .eight {
+    grid-area: eight;
+}
+
+.calculator > .nine {
+    grid-area: nine;
+}

@@ -1,0 +1,32 @@
+
+* {
+    font-family: Helvetica, sans-serif;
+}
+
+body {
+    background-color: darkslategray;
+}
+
+h1 {
+    color: aliceblue;
+    text-align: center;
+}
+
+h2 {
+    color: rgb(40, 253, 147);
+    font-weight: bold;
+    font-size: 20px;
+}
+
+p {
+    color: aliceblue;
+}
+
+ul > li, ul > li > a, ol > li, ol > li > a {
+    color: aliceblue;
+}
+
+img {
+    width: 300px;
+    height: auto;
+}

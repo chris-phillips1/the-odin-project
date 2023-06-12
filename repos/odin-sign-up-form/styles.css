@@ -1,0 +1,137 @@
+:root {
+    --primary-button-color: #596D48;
+    --input-focus-color: rgb(39, 80, 206);
+    --input-error-color: rgb(170, 46, 38);
+
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@font-face {
+    font-family: Norse-Bold;
+    src: url(./fonts/Norse-Bold.otf);
+}
+
+.main-content {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+}
+
+.left-pane {
+    background-image: url('./images/leaves.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-window {
+    display: flex;
+    justify-content: center;
+    background-color: rgba(20, 20, 20, 0.5);
+    margin-top: 21vh;
+    padding: 0.5rem 0;
+}
+
+.logo-window img {
+    max-width: 18%;
+}
+
+.logo-window p {
+    color: white;
+    font-family: 'Norse-Bold', sans-serif;
+    font-size: 4.5rem;
+    align-self: center;
+}
+
+.left-pane>p {
+    margin-top: 62vh;
+    color: white;
+    opacity: .68;
+    font-size: .75rem;
+    padding-left: 25%;
+}
+
+.left-pane>p a {
+    color: white;
+}
+
+.right-pane {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(245, 245, 245);
+}
+
+.call-to-action {
+    height: 40vh;
+}
+
+.call-to-action>p {
+    margin-right: 20em;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.call-to-action p:first-of-type {
+    margin-top: 7em;
+}
+
+.call-to-action p:nth-last-child(1) {
+    margin: 1rem 0 2rem 0;
+}
+
+.form-container {
+    background-color: white;
+    box-shadow: 0px 0px 2px lightgray;
+    height: 27vh;
+}
+
+.form-container>h3 {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.form-container>form {
+    display: flex;
+    gap: 50px;
+}
+
+.form-container>form label {
+    font-size: x-small;
+}
+
+.form-container>form input {
+    display: block;
+    border: 1px solid #E5E7EB;
+    width: 20em;
+}
+
+.form-container>form input:invalid {
+    border: 1px solid red;
+}
+
+.account-actions {
+    height: 33vh;
+    margin: 10px 0px 0px 30px;
+}
+
+.account-actions button {
+    background-color: #596D48;
+    color: white;
+    padding: 10px 50px;
+    border-radius: 10px;
+    border: none;
+    margin: 15px 0 20px 0;
+}
+
+.indented {
+    margin-left: 30px;
+}
