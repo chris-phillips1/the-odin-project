@@ -24,6 +24,12 @@ img {
     grid-area: 1 / 1 / 3 / 2;
 }
 
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    gap: 1rem;
+}
+
 .header-container {
     background-color: white;
     grid-area: 1 / 2 / 2 / 3;
