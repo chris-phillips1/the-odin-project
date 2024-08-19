@@ -22,11 +22,55 @@ img {
     background-color: var(--primary-color);
     color: white;
     grid-area: 1 / 1 / 3 / 2;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 3rem;
 }
 
-.dashboard-container {
-    display: grid;
-    grid-template-columns: 1fr 6fr;
+.sidebar-container ul {
+    list-style-type: none;
+}
+
+.dashboard-container,
+.navigation-container,
+.meta-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-container li img {
+    width: 10%;
+}
+
+.sidebar-container li h3 {
+    align-self: center;
+}
+
+.dashboard-container li,
+.navigation-container li,
+.meta-container li {
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboard-container li img {
+    width: 20%;
+}
+
+.dashboard-container li h2 {
+    font-size: 1.5rem;
+    align-self: center;
+}
+
+.dashboard {
+    gap: 0.5rem;
+}
+
+.navigation-container,
+.navigation-container li,
+.meta-container,
+.meta-container li {
     gap: 1rem;
 }
 
