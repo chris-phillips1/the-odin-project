@@ -11,7 +11,7 @@
 .grid {
     display: grid;
     grid-template-columns: 1fr 5fr;
-    grid-template-rows: 1fr 5fr;
+    grid-template-rows: 1fr 6fr;
 }
 
 .white-img {
@@ -98,10 +98,34 @@
 
 .user-info {
     display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-right: 1rem;
 }
 
 .user-info img {
     width: 1.5rem;
+}
+
+.user-info p {
+    align-self: center;
+}
+
+.user-greeting-container {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 5fr;
+}
+
+.user-greeting-container img {
+    padding: 1rem;
+    width: auto;
+    grid-row: 1 / 3;
+}
+
+.user-greeting-container p:first-of-type {
+    align-self: flex-end;
+    padding-bottom: .25rem;
 }
 
 .main-content-container {
