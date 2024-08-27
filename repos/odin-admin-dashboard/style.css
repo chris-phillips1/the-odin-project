@@ -137,7 +137,11 @@
 .user-greeting-container p:first-of-type {
     align-self: flex-end;
     padding-bottom: .25rem;
-    font-size: 2rem;
+    font-size: 1rem;
+}
+
+.user-greeting-container p:nth-of-type(2) {
+    font-size: 1.3rem;
 }
 
 .user-actions {
