@@ -121,6 +121,10 @@
     width: 2.5rem;
 }
 
+.user-profile p {
+    font-weight: 600;
+}
+
 .user-greeting-container {
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -137,11 +141,13 @@
 .user-greeting-container p:first-of-type {
     align-self: flex-end;
     padding-bottom: .25rem;
-    font-size: 1rem;
+    font-size: .85rem;
+    font-weight: 600;
 }
 
 .user-greeting-container p:nth-of-type(2) {
     font-size: 1.3rem;
+    font-weight: 600;
 }
 
 .user-actions {
