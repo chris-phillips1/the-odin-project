@@ -1,5 +1,6 @@
 :root {
     --primary-color: #4391CE;
+    --secondary-color: #E3E8EF;
 }
 
 * {
@@ -90,7 +91,7 @@
 
 .search-container input {
     flex: 1;
-    background-color: #E3E8EF;
+    background-color: var(--secondary-color);
     border: none;
     border-radius: 1rem;
 }
@@ -168,7 +169,7 @@
 }
 
 .main-content-container {
-    background-color: #E3E8EF;
+    background-color: var(--secondary-color);
     grid-area: 2 / 2 / 3 / 3;
     display: grid;
     grid-template-rows: repeat(2, minmax(min-content, 300px));
@@ -182,7 +183,8 @@
     display: grid;
     grid-template-rows: 2rem;
     grid-auto-rows: minmax(min-content, 100px);
-    gap: 1rem 1.5rem;
+    gap: 1.5rem;
+    padding: 0 2rem;
 }
 
 .projects h2 {
@@ -195,11 +197,17 @@
     grid-template-rows: 1fr 4fr 1fr;
     padding: 1rem 1.5rem;
     height: 14rem;
+    box-shadow: inset 3rem 0 0 -2.4rem #E7B54A;
+    border-radius: .7rem;
 }
 
 .project-card h3 {
     align-self: flex-end;
     padding-bottom: .5rem;
+}
+
+.project-card p {
+    color: gray;
 }
 
 .card-actions {
