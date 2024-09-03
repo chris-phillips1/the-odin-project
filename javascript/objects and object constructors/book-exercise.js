@@ -1,3 +1,6 @@
+const myLibrary = [];
+const tableElement = document.createElement('table');
+
 function Book(title, author, pages, read) {
     this.title = title;
     this.author - author;
@@ -10,6 +13,32 @@ function Book(title, author, pages, read) {
     }
 }
 
-theHobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 295, false);
+function addBookToLibrary(book) {
+    myLibrary.push(book);
 
-console.log(theHobbit.info());
+}
+
+function displayBooks() {
+    for (book in myLibrary) {
+        const bookRow = document.createElement('tr');
+
+        const bookTitle = document.createElement('td');
+        bookTitle.innerText = book.title;
+        const bookAuthor = document.createElement('td');
+        bookAuthor.innerText = book.author;
+        const bookPages = document.createElement('td');
+        bookPages.innerText = book.pages;
+        const bookRead = document.createElement('td');
+        bookRead.innerText = book.read;
+
+        bookRow.appendChild(bookTitle);
+        bookRow.appendChild(bookAuthor);
+        bookRow.appendChild(bookPages);
+        bookRow.appendChild(bookRead);
+        tableElement.appendChild(bookRow);
+    }
+
+}
+
+addBookToLibrary(new Book('The Hobbit', 'J.R.R. Tolkien', 295, false));
+displayBooks();
