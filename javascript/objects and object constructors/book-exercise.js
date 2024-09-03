@@ -1,9 +1,9 @@
-const myLibrary = [];
-const tableElement = document.createElement('table');
+let myLibrary = [];
+const tableElement = document.querySelector('table');
 
 function Book(title, author, pages, read) {
     this.title = title;
-    this.author - author;
+    this.author = author;
     this.pages = pages;
     this.read = read;
     this.info = function () {
@@ -19,7 +19,7 @@ function addBookToLibrary(book) {
 }
 
 function displayBooks() {
-    for (book in myLibrary) {
+    myLibrary.forEach((book) => {
         const bookRow = document.createElement('tr');
 
         const bookTitle = document.createElement('td');
@@ -36,8 +36,7 @@ function displayBooks() {
         bookRow.appendChild(bookPages);
         bookRow.appendChild(bookRead);
         tableElement.appendChild(bookRow);
-    }
-
+    });
 }
 
 addBookToLibrary(new Book('The Hobbit', 'J.R.R. Tolkien', 295, false));
