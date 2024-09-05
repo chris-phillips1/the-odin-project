@@ -12,10 +12,8 @@ function Book(title, author, pages, read) {
     this.author = author;
     this.pages = pages;
     this.read = read;
-    this.info = function () {
-        let bookInfo = title + ' by ' + author + ', ' + pages + ' pages, ';
-        bookInfo += read ? 'read' : 'not read yet';
-        return bookInfo;
+    this.toggleRead = function () {
+        this.read = !this.read;
     }
 }
 
@@ -29,7 +27,7 @@ function displayBooks() {
         tableElement.removeChild(tableElement.firstChild);
     }
 
-    myLibrary.forEach((book) => {
+    myLibrary.forEach((book, index) => {
         const bookRow = document.createElement('tr');
 
         const bookTitle = document.createElement('td');
@@ -41,9 +39,23 @@ function displayBooks() {
         const bookRead = document.createElement('td');
         bookRead.innerText = book.read ? 'Yes' : 'No';
 
-        const updateButtons = document.createElement('div');
+        const updateButtons = document.createElement('td');
         const deleteBookButton = document.createElement('button');
         const toggleReadStatusButton = document.createElement('button');
+
+        deleteBookButton.innerText = 'Delete';
+        deleteBookButton.dataset.bookIndex = index;
+        deleteBookButton.onclick = () => {
+            myLibrary.splice(deleteBookButton.dataset.bookIndex, 1);
+            displayBooks();
+        };
+
+        toggleReadStatusButton.innerText = 'Toggle Read';
+        toggleReadStatusButton.onclick = () => {
+            book.toggleRead();
+            displayBooks();
+        };
+
         updateButtons.appendChild(deleteBookButton);
         updateButtons.appendChild(toggleReadStatusButton);
 
