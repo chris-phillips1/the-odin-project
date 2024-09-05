@@ -41,10 +41,17 @@ function displayBooks() {
         const bookRead = document.createElement('td');
         bookRead.innerText = book.read ? 'Yes' : 'No';
 
+        const updateButtons = document.createElement('div');
+        const deleteBookButton = document.createElement('button');
+        const toggleReadStatusButton = document.createElement('button');
+        updateButtons.appendChild(deleteBookButton);
+        updateButtons.appendChild(toggleReadStatusButton);
+
         bookRow.appendChild(bookTitle);
         bookRow.appendChild(bookAuthor);
         bookRow.appendChild(bookPages);
         bookRow.appendChild(bookRead);
+        bookRow.appendChild(updateButtons);
         tableElement.appendChild(bookRow);
     });
 }
