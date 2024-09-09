@@ -1,25 +1,30 @@
-function Gameboard() {
-    const rows = 6;
-    const columns = 7;
-    const board = [];
-
-    for (let i = 0; i < rows; i++) {
-        board[i] = [];
-        for (let j = 0; j < columns; j++) {
-            board[i].push(null);
-        }
-    }
-
-    console.log(board);
-
-}
-
 function Player() {
 
 }
 
 function GameRunner() {
-    Gameboard();
+    const gameboard = function Gameboard() {
+        const board = [];
+        const generateBoard = () => {
+            board.push([null, null, null]);
+            board.push([null, null, null]);
+            board.push([null, null, null]);
+        };
+
+        const getBoard = () => board;
+        const printBoard = () => {
+        };
+
+        const addMoveToBoard = (player, row, column) => {
+        };
+
+
+        return { generateBoard, getBoard, printBoard, addMoveToBoard };
+    }();
+
+    gameboard.generateBoard();
+    console.log(gameboard.getBoard());
+
 }
 
 GameRunner();
