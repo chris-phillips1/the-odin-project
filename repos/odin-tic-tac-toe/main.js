@@ -1,11 +1,13 @@
 const gameboard = function Gameboard() {
     const board = [];
+    let boardStatus = { hasWinner: false };
     const generateBoard = () => {
         board.push(['  ', '  ', '  ']);
         board.push(['  ', '  ', '  ']);
         board.push(['  ', '  ', '  ']);
     };
 
+    const getStatus = () => boardStatus;
     const getBoard = () => board;
     const printBoard = () => {
         let boardString = 'Board\n';
@@ -27,11 +29,13 @@ const gameboard = function Gameboard() {
     };
 
     const checkWin = (coordinates) => {
-        // return { hasWinner: (board[1][1] === 'X') };
+        let winStatus = false;
+
+        boardStatus.hasWinner = winStatus;
     };
 
 
-    return { generateBoard, getBoard, printBoard, addMoveToBoard, checkWin };
+    return { generateBoard, getStatus, getBoard, printBoard, addMoveToBoard };
 }();
 
 function Player(playerToken, isActive) {
@@ -51,26 +55,31 @@ function Player(playerToken, isActive) {
     return { getToken, setToken, getActive, toggleActive };
 }
 
+function togglePlayers(players) {
+    players.forEach((player) => {
+        player.toggleActive();
+    });
+}
+
 function GameRunner(board) {
     board.generateBoard();
     const player1 = Player('X', true);
     const player2 = Player('O', false);
 
-    let boardStatus = board.checkWin();
+    let boardStatus = board.getStatus();
 
     while (!(boardStatus.hasWinner)) {
         let playerSpot = prompt('Which spot (comma-delimited): ');
 
         if (playerSpot) {
             playerSpot = playerSpot.split(',', 2);
+            const activePlayer = player1.getActive() ? player1 : player2;
+            board.addMoveToBoard(activePlayer.getToken(), { row: playerSpot[0], column: playerSpot[1] });
+            togglePlayers([player1, player2]);
+            board.printBoard();
+        } else {
+            break;
         }
-
-        const activePlayer = player1.getActive() ? player1 : player2;
-        board.addMoveToBoard(activePlayer.getToken(), { row: playerSpot[0], column: playerSpot[1] });
-        player1.toggleActive();
-        player2.toggleActive();
-        boardStatus = board.checkWin();
-        board.printBoard();
     }
 }
 
