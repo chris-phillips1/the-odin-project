@@ -71,15 +71,15 @@ function GameRunner(board) {
     while (!(boardStatus.hasWinner)) {
         let playerSpot = prompt('Which spot (comma-delimited): ');
 
-        if (playerSpot) {
-            playerSpot = playerSpot.split(',', 2);
-            const activePlayer = player1.getActive() ? player1 : player2;
-            board.addMoveToBoard(activePlayer.getToken(), { row: playerSpot[0], column: playerSpot[1] });
-            togglePlayers([player1, player2]);
-            board.printBoard();
-        } else {
+        if (!playerSpot) {
             break;
         }
+
+        playerSpot = playerSpot.split(',', 2);
+        const activePlayer = player1.getActive() ? player1 : player2;
+        board.addMoveToBoard(activePlayer.getToken(), { row: playerSpot[0], column: playerSpot[1] });
+        togglePlayers([player1, player2]);
+        board.printBoard();
     }
 }
 
