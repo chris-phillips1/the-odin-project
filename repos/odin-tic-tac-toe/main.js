@@ -1,6 +1,6 @@
 const gameboard = function Gameboard() {
     const board = [];
-    let boardStatus = { hasWinner: false };
+    let boardStatus = {};
     const generateBoard = () => {
         board.push(['  ', '  ', '  ']);
         board.push(['  ', '  ', '  ']);
@@ -24,14 +24,20 @@ const gameboard = function Gameboard() {
         let boardSpace = board[coordinates.row - 1][coordinates.column - 1];
         if (boardSpace.trim().length === 0) {
             board[coordinates.row - 1][coordinates.column - 1] = playerToken;
-            checkWin(coordinates);
+            checkGameEnd(coordinates);
         }
     };
 
-    const checkWin = (coordinates) => {
+    const checkGameEnd = (coordinates) => {
         let winStatus = false;
+        let gameBoardFull = false;
 
-        boardStatus.hasWinner = winStatus;
+        const filteredGamedBoard = board.flat().filter((boardItem) => {
+            return boardItem.trim().length !== 0;
+        });
+
+        gameBoardFull = (filteredGamedBoard.length === 9);
+        boardStatus = { hasWinner: winStatus, isFull: gameBoardFull };
     };
 
 
@@ -68,7 +74,7 @@ function GameRunner(board) {
 
     let boardStatus = board.getStatus();
 
-    while (!(boardStatus.hasWinner)) {
+    while (!(board.getStatus().hasWinner) && !(board.getStatus().isFull)) {
         let playerSpot = prompt('Which spot (comma-delimited): ');
 
         if (!playerSpot) {
