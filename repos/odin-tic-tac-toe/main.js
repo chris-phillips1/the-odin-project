@@ -36,6 +36,20 @@ const gameboard = function Gameboard() {
             return boardItem.trim().length !== 0;
         }).length === 9;
 
+        //Check rows
+        currentRow = board[coordinates.row - 1];
+        if (new Set(currentRow).size === 1) {
+            winStatus = true;
+        }
+
+        //Check columns
+        let currentColumn = [];
+        board.forEach((boardRow) => {
+            currentColumn.push(boardRow[coordinates.column - 1]);
+        });
+
+        winStatus = (new Set(currentRow).size === 1) || (new Set(currentColumn).size === 1);
+
         boardStatus = { hasWinner: winStatus, isFull: gameBoardFull };
     };
 
