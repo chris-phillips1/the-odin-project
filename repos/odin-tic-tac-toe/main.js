@@ -30,13 +30,12 @@ const gameboard = function Gameboard() {
 
     const checkGameEnd = (coordinates) => {
         let winStatus = false;
-        let gameBoardFull = false;
 
-        const filteredGamedBoard = board.flat().filter((boardItem) => {
+        // Check if game board is full
+        const gameBoardFull = board.flat().filter((boardItem) => {
             return boardItem.trim().length !== 0;
-        });
+        }).length === 9;
 
-        gameBoardFull = (filteredGamedBoard.length === 9);
         boardStatus = { hasWinner: winStatus, isFull: gameBoardFull };
     };
 
@@ -71,8 +70,6 @@ function GameRunner(board) {
     board.generateBoard();
     const player1 = Player('X', true);
     const player2 = Player('O', false);
-
-    let boardStatus = board.getStatus();
 
     while (!(board.getStatus().hasWinner) && !(board.getStatus().isFull)) {
         let playerSpot = prompt('Which spot (comma-delimited): ');
