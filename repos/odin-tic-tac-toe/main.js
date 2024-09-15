@@ -25,11 +25,13 @@ const gameboard = function Gameboard() {
         if (boardSpace.trim().length === 0) {
             board[coordinates.row - 1][coordinates.column - 1] = playerToken;
             checkGameEnd(coordinates);
+            return true;
         }
+
+        return false;
     };
 
     const checkGameEnd = (coordinates) => {
-
         // Check if game board is full
         const gameBoardFull = board.flat().filter((boardItem) => {
             return boardItem.trim().length !== 0;
@@ -48,9 +50,10 @@ const gameboard = function Gameboard() {
 
         // Check diagonals
         const regularDiagonalSet = new Set([board[0][0], board[1][1], board[2][2]]);
-        const regularDiagonalWin = regularDiagonalSet.size === 1 && regularDiagonalSet[0] !== '  ';
         const antiDiagonalSet = new Set([board[2][0], board[2][2], board[0][2]]);
-        const antiDiagonalWin = antiDiagonalSet.size === 1 && antiDiagonalSet[0] !== '  ';
+
+        const antiDiagonalWin = antiDiagonalSet.size === 1 && !antiDiagonalSet.has('  ');
+        const regularDiagonalWin = regularDiagonalSet.size === 1 && !regularDiagonalSet.has('  ');
 
 
         const winStatus = rowWin || columnWin || regularDiagonalWin || antiDiagonalWin;
@@ -98,8 +101,11 @@ function GameRunner(board) {
 
         playerSpot = playerSpot.split(',', 2);
         const activePlayer = player1.getActive() ? player1 : player2;
-        board.addMoveToBoard(activePlayer.getToken(), { row: playerSpot[0], column: playerSpot[1] });
-        togglePlayers([player1, player2]);
+        const validMove = board.addMoveToBoard(activePlayer.getToken(), { row: playerSpot[0], column: playerSpot[1] });
+        if (validMove) {
+            togglePlayers([player1, player2]);
+        }
+
         board.printBoard();
     }
 }
