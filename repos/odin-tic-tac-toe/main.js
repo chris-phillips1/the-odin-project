@@ -47,8 +47,10 @@ const gameboard = function Gameboard() {
         const columnWin = (new Set(currentColumn).size === 1);
 
         // Check diagonals
-        const regularDiagonalWin = new Set([board[0][0], board[1][1], board[2][2]]).size === 1;
-        const antiDiagonalWin = new Set([board[2][0], board[2][2], board[0][2]]).size === 1;
+        const regularDiagonalSet = new Set([board[0][0], board[1][1], board[2][2]]);
+        const regularDiagonalWin = regularDiagonalSet.size === 1 && regularDiagonalSet[0] !== '  ';
+        const antiDiagonalSet = new Set([board[2][0], board[2][2], board[0][2]]);
+        const antiDiagonalWin = antiDiagonalSet.size === 1 && antiDiagonalSet[0] !== '  ';
 
 
         const winStatus = rowWin || columnWin || regularDiagonalWin || antiDiagonalWin;
