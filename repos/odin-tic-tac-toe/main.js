@@ -29,27 +29,29 @@ const gameboard = function Gameboard() {
     };
 
     const checkGameEnd = (coordinates) => {
-        let winStatus = false;
 
         // Check if game board is full
         const gameBoardFull = board.flat().filter((boardItem) => {
             return boardItem.trim().length !== 0;
         }).length === 9;
 
-        //Check rows
+        // Check rows
         currentRow = board[coordinates.row - 1];
-        if (new Set(currentRow).size === 1) {
-            winStatus = true;
-        }
+        const rowWin = (new Set(currentRow).size === 1);
 
-        //Check columns
+        // Check columns
         let currentColumn = [];
         board.forEach((boardRow) => {
             currentColumn.push(boardRow[coordinates.column - 1]);
         });
+        const columnWin = (new Set(currentColumn).size === 1);
 
-        winStatus = (new Set(currentRow).size === 1) || (new Set(currentColumn).size === 1);
+        // Check diagonals
+        const regularDiagonalWin = new Set([board[0][0], board[1][1], board[2][2]]).size === 1;
+        const antiDiagonalWin = new Set([board[3][1], board[2][2], board[1][3]]).size === 1;
 
+
+        const winStatus = rowWin || columnWin || regularDiagonalWin || antiDiagonalWin;
         boardStatus = { hasWinner: winStatus, isFull: gameBoardFull };
     };
 
