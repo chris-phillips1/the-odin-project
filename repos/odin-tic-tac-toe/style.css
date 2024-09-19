@@ -10,3 +10,11 @@ button {
 .b-right {
     border-right: 1px solid black;
 }
+
+.top-row,
+.middle-row,
+.bottom-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
