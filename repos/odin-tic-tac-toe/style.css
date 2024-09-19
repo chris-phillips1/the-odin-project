@@ -1,19 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 5rem;
+}
+
 button {
     padding: 4rem;
     font-size: 1rem;
 }
 
-.b-bot {
-    border-bottom: 1px solid black;
-}
-
-.b-right {
-    border-right: 1px solid black;
-}
-
-.top-row,
-.middle-row,
-.bottom-row {
+.board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
