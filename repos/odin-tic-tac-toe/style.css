@@ -4,17 +4,30 @@
     box-sizing: border-box;
 }
 
-body {
-    padding: 5rem;
-}
-
 button {
-    padding: 4rem;
-    font-size: 1rem;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
 }
 
 .board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    padding: 4rem 25rem;
+}
+
+.board button {
+    padding: 2rem 0;
+    font-size: 5rem;
+    block-size: 20vh;
+}
+
+.right {
+    border-right: unset;
+}
+
+.bottom {
+    border-bottom: unset;
 }

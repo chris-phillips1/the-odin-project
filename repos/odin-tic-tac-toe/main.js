@@ -93,7 +93,7 @@ function GameRunner(board) {
     const player2 = Player('O', false);
 
     while (!(board.getStatus().hasWinner) && !(board.getStatus().isFull)) {
-        let playerSpot = prompt('Which spot (comma-delimited): ');
+        // let playerSpot = prompt('Which spot (comma-delimited): ');
 
         if (!playerSpot) {
             break;
