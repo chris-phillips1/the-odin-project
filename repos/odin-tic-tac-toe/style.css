@@ -14,7 +14,8 @@ button {
 
 .board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 2px 1fr 2px 1fr;
+    grid-template-rows: 1fr 2px 1fr 2px 1fr;
     padding: 4rem 25rem;
 }
 
@@ -22,12 +23,13 @@ button {
     padding: 2rem 0;
     font-size: 5rem;
     block-size: 20vh;
+    border: none;
 }
 
-.right {
-    border-right: unset;
+.board button:active {
+    background-color: aliceblue;
 }
 
-.bottom {
-    border-bottom: unset;
+.board div {
+    border: 1px black solid;
 }
