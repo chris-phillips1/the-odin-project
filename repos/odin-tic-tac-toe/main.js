@@ -57,7 +57,7 @@ const gameboard = function Gameboard() {
 
 
         const winStatus = rowWin || columnWin || regularDiagonalWin || antiDiagonalWin;
-        boardStatus = { hasWinner: winStatus, isFull: gameBoardFull };
+        boardStatus = { hasWinner: winStatus, isFull: gameBoardFull, isTie: !winStatus && gameBoardFull };
     };
 
 
@@ -108,6 +108,10 @@ function GameRunner(board) {
 
         board.printBoard();
     }
+}
+
+function ScreenController(board) {
+    
 }
 
 GameRunner(gameboard);
