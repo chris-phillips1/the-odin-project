@@ -64,6 +64,21 @@ const gameboard = function Gameboard() {
     return { generateBoard, getStatus, getBoard, printBoard, addMoveToBoard };
 }();
 
+const screenController = function ScreenController() {
+    const boardNodes = document.querySelectorAll('.board button');
+    const updateBoardDisplay = (boardArray) => {
+        if (boardArray.flat().length === boardNodes.length) {
+            boardArray.forEach((boardRow, rowIndex) => {
+                boardRow.forEach((boardSpace, index) => {
+                    boardNodes[rowIndex * index].innerText = boardSpace;
+                });
+            })
+        }
+    };
+
+    return { updateBoardDisplay };
+}();
+
 function Player(playerToken, isActive) {
     let token = playerToken;
     let active = isActive;
@@ -91,6 +106,7 @@ function GameRunner(board) {
     board.generateBoard();
     const player1 = Player('X', true);
     const player2 = Player('O', false);
+    screenController.updateBoardDisplay(board.getBoard());
 
     while (!(board.getStatus().hasWinner) && !(board.getStatus().isFull)) {
         // let playerSpot = prompt('Which spot (comma-delimited): ');
@@ -108,10 +124,6 @@ function GameRunner(board) {
 
         board.printBoard();
     }
-}
-
-function ScreenController(board) {
-    
 }
 
 GameRunner(gameboard);
