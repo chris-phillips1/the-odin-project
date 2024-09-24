@@ -67,12 +67,11 @@ const gameboard = function Gameboard() {
 const screenController = function ScreenController() {
     const boardNodes = document.querySelectorAll('.board button');
     const updateBoardDisplay = (boardArray) => {
-        if (boardArray.flat().length === boardNodes.length) {
-            boardArray.forEach((boardRow, rowIndex) => {
-                boardRow.forEach((boardSpace, index) => {
-                    boardNodes[rowIndex * index].innerText = boardSpace;
-                });
-            })
+        const flatBoard = boardArray.flat();
+        if (flatBoard.length === boardNodes.length) {
+            boardNodes.forEach((node, index) => {
+                node.innerText = flatBoard[index];
+            });
         }
     };
 
