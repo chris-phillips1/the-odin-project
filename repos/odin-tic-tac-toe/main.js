@@ -66,6 +66,7 @@ const gameboard = function Gameboard() {
 
 const screenController = function ScreenController() {
     const boardNodes = document.querySelectorAll('.board button');
+
     const updateBoardDisplay = (boardArray) => {
         const flatBoard = boardArray.flat();
         if (flatBoard.length === boardNodes.length) {
@@ -75,54 +76,60 @@ const screenController = function ScreenController() {
         }
     };
 
-    return { updateBoardDisplay };
-}();
-
-function Player(playerToken, isActive) {
-    let token = playerToken;
-    let active = isActive;
-
-    const getToken = () => token;
-    const setToken = (newToken) => {
-        token = newToken;
+    const initializeBoardEventHandlers = () => {
+        boardNodes.forEach((node) => {
+            node.addEventListener('click', () => {
+                node.innerText = playerController.getActivePlayer().getToken();
+            });
+        })
     };
 
-    const getActive = () => active;
-    const toggleActive = () => {
-        active = !active;
-    }
+    return { updateBoardDisplay, initializeBoardEventHandlers };
+}();
 
-    return { getToken, setToken, getActive, toggleActive };
-}
+const playerController = function PlayerController() {
+    const allPlayers = [];
+    let activePlayer;
 
-function togglePlayers(players) {
-    players.forEach((player) => {
-        player.toggleActive();
-    });
-}
+    const generatePlayer = (token) => {
+        const generatedPlayer = new Player(token);
+        activePlayer = activePlayer ? activePlayer : generatedPlayer;
 
-function GameRunner(board) {
-    board.generateBoard();
-    const player1 = Player('X', true);
-    const player2 = Player('O', false);
-    screenController.updateBoardDisplay(board.getBoard());
+        allPlayers.push(generatedPlayer);
+        return generatedPlayer;
+    };
 
-    while (!(board.getStatus().hasWinner) && !(board.getStatus().isFull)) {
-        // let playerSpot = prompt('Which spot (comma-delimited): ');
-
-        if (!playerSpot) {
-            break;
+    const toggleActivePlayer = () => {
+        if (allPlayers.length === 2) {
+            activePlayer = allPlayers.filter((player) => {
+                return player.getToken() !== activePlayer.getToken();
+            })[0];
         }
+    };
 
-        playerSpot = playerSpot.split(',', 2);
-        const activePlayer = player1.getActive() ? player1 : player2;
-        const validMove = board.addMoveToBoard(activePlayer.getToken(), { row: playerSpot[0], column: playerSpot[1] });
-        if (validMove) {
-            togglePlayers([player1, player2]);
-        }
+    const getActivePlayer = () => activePlayer;
 
-        board.printBoard();
-    }
+    return { generatePlayer, toggleActivePlayer, getActivePlayer };
+}();
+
+function Player(token) {
+    let playerToken = token;
+    const getToken = () => playerToken;
+
+    return { getToken };
 }
 
-GameRunner(gameboard);
+function GameRunner() {
+    playerController.generatePlayer('X');
+    playerController.generatePlayer('O');
+    gameboard.generateBoard();
+    screenController.initializeBoardEventHandlers();
+    screenController.updateBoardDisplay(gameboard.getBoard());
+
+    // While the board is still playable
+    // while (!(board.getStatus().hasWinner) && !(board.getStatus().isFull)) {
+    // Change active player
+    // Update active player node
+}
+
+GameRunner();
