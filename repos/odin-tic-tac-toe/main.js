@@ -102,6 +102,7 @@ const screenController = function ScreenController() {
     const lockBoard = () => {
         boardNodes.forEach((node) => {
             node.removeEventListener('click', handleBoardClick);
+            node.classList.add('locked');
         })
     };
 
@@ -148,6 +149,7 @@ const screenController = function ScreenController() {
     const reset = () => {
         boardNodes.forEach((node) => {
             node.innerText = '';
+            node.classList.remove('locked');
         })
     };
 

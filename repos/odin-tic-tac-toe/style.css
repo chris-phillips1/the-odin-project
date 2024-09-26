@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    background-color: beige;
+}
+
 button {
     background: none;
     color: inherit;
@@ -26,10 +30,10 @@ button {
     border: none;
 }
 
-.board button:active {
-    background-color: aliceblue;
-}
-
 .board div {
     border: 1px black solid;
+}
+
+.locked {
+    background-color: color-mix(in hsl shorter hue, beige 97%, white 3%);
 }
