@@ -7,6 +7,11 @@ const gameboard = function Gameboard() {
         board.push(['  ', '  ', '  ']);
     };
 
+    const reset = () => {
+        board.splice(0, board.length);
+        boardStatus = {};
+    }
+
     const getStatus = () => boardStatus;
     const getBoard = () => board;
     const printBoard = () => {
@@ -20,48 +25,66 @@ const gameboard = function Gameboard() {
         console.log(boardString);
     };
 
+    const addOrChangeBoardStatus = (objectToUpdate) => {
+        objectKey = Object.keys(objectToUpdate)[0];
+        boardStatus[objectKey] = objectToUpdate[objectKey];
+    }
+
     const addMoveToBoard = (playerToken, coordinates) => {
-        let boardSpace = board[coordinates.row - 1][coordinates.column - 1];
+        let rowIndex = coordinates.row - 1;
+        let colIndex = coordinates.column - 1;
+        let boardSpace = board[rowIndex][colIndex];
+        let isValidMove = false;
+
         if (boardSpace.trim().length === 0) {
-            board[coordinates.row - 1][coordinates.column - 1] = playerToken;
-            checkGameEnd(coordinates);
-            return true;
+            board[rowIndex][colIndex] = playerToken;
+            isValidMove = true;
         }
 
-        return false;
+        addOrChangeBoardStatus({ recentMoveIsValid: isValidMove });
     };
 
-    const checkGameEnd = (coordinates) => {
+    const refreshBoardStatus = (coordinates) => {
+        let rowIndex = coordinates.row - 1;
+        let colIndex = coordinates.column - 1;
+        let winningPlayer = '';
+
         // Check if game board is full
         const gameBoardFull = board.flat().filter((boardItem) => {
             return boardItem.trim().length !== 0;
         }).length === 9;
+        addOrChangeBoardStatus({ isFull: gameBoardFull });
 
         // Check rows
-        currentRow = board[coordinates.row - 1];
+        currentRow = board[rowIndex];
         const rowWin = (new Set(currentRow).size === 1);
+        winningPlayer = rowWin ? currentRow[0] : winningPlayer;
 
         // Check columns
         let currentColumn = [];
         board.forEach((boardRow) => {
-            currentColumn.push(boardRow[coordinates.column - 1]);
+            currentColumn.push(boardRow[colIndex]);
         });
         const columnWin = (new Set(currentColumn).size === 1);
+        winningPlayer = columnWin ? currentColumn[0] : winningPlayer;
 
         // Check diagonals
         const regularDiagonalSet = new Set([board[0][0], board[1][1], board[2][2]]);
-        const antiDiagonalSet = new Set([board[2][0], board[2][2], board[0][2]]);
-
-        const antiDiagonalWin = antiDiagonalSet.size === 1 && !antiDiagonalSet.has('  ');
         const regularDiagonalWin = regularDiagonalSet.size === 1 && !regularDiagonalSet.has('  ');
+        winningPlayer = regularDiagonalWin ? Array.from(regularDiagonalSet)[0] : winningPlayer;
 
-
+        const antiDiagonalSet = new Set([board[2][0], board[1][1], board[0][2]]);
+        const antiDiagonalWin = antiDiagonalSet.size === 1 && !antiDiagonalSet.has('  ');
+        winningPlayer = antiDiagonalWin ? Array.from(antiDiagonalSet)[0] : winningPlayer;
         const winStatus = rowWin || columnWin || regularDiagonalWin || antiDiagonalWin;
-        boardStatus = { hasWinner: winStatus, isFull: gameBoardFull, isTie: !winStatus && gameBoardFull };
+
+        addOrChangeBoardStatus({ hasWinner: winStatus });
+        addOrChangeBoardStatus({ winner: winningPlayer });
+        addOrChangeBoardStatus({ isTie: !winStatus && gameBoardFull });
     };
 
 
-    return { generateBoard, getStatus, getBoard, printBoard, addMoveToBoard };
+    return { generateBoard, reset, getStatus, getBoard, printBoard, addMoveToBoard, refreshBoardStatus };
 }();
 
 const screenController = function ScreenController() {
@@ -76,15 +99,59 @@ const screenController = function ScreenController() {
         }
     };
 
-    const initializeBoardEventHandlers = () => {
+    const lockBoard = () => {
         boardNodes.forEach((node) => {
-            node.addEventListener('click', () => {
-                node.innerText = playerController.getActivePlayer().getToken();
-            });
+            node.removeEventListener('click', handleBoardClick);
         })
     };
 
-    return { updateBoardDisplay, initializeBoardEventHandlers };
+    const createModal = () => {
+        // dialog
+        // p
+        // div
+        // -button
+        // -button
+    }
+
+    const initializeBoardEventHandlers = () => {
+        boardNodes.forEach((node) => {
+            node.addEventListener('click', handleBoardClick);
+        })
+    };
+
+    const handleBoardClick = (e) => {
+        const node = e.currentTarget;
+        const activePlayerToken = playerController.getActivePlayer().getToken();
+
+        const moveCoordinates = { row: node.dataset.row, column: node.dataset.column };
+        gameboard.addMoveToBoard(activePlayerToken, moveCoordinates);
+        const boardStatus = gameboard.getStatus();
+
+        if (boardStatus.recentMoveIsValid) {
+            gameboard.refreshBoardStatus(moveCoordinates);
+            screenController.updateBoardDisplay(gameboard.getBoard());
+            playerController.toggleActivePlayer();
+
+            if (boardStatus.hasWinner || boardStatus.isFull || boardStatus.isTie) {
+                lockBoard();
+                // Create a modal, only do the below on confirmation
+                // On exit, keep the board locked and create a button for starting a new game
+                createModal();
+                setTimeout(() => {
+                    gameRunner.fullReset();
+                    gameRunner.setupGame();
+                }, 5000);
+            }
+        }
+    };
+
+    const reset = () => {
+        boardNodes.forEach((node) => {
+            node.innerText = '';
+        })
+    };
+
+    return { updateBoardDisplay, initializeBoardEventHandlers, reset };
 }();
 
 const playerController = function PlayerController() {
@@ -109,7 +176,12 @@ const playerController = function PlayerController() {
 
     const getActivePlayer = () => activePlayer;
 
-    return { generatePlayer, toggleActivePlayer, getActivePlayer };
+    const reset = () => {
+        allPlayers.splice(0, allPlayers.length);
+        activePlayer = null;
+    };
+
+    return { generatePlayer, toggleActivePlayer, getActivePlayer, reset };
 }();
 
 function Player(token) {
@@ -119,17 +191,21 @@ function Player(token) {
     return { getToken };
 }
 
-function GameRunner() {
-    playerController.generatePlayer('X');
-    playerController.generatePlayer('O');
-    gameboard.generateBoard();
-    screenController.initializeBoardEventHandlers();
-    screenController.updateBoardDisplay(gameboard.getBoard());
+const gameRunner = function GameRunner() {
+    const setupGame = () => {
+        playerController.generatePlayer('X');
+        playerController.generatePlayer('O');
+        gameboard.generateBoard();
+        screenController.initializeBoardEventHandlers();
+    };
 
-    // While the board is still playable
-    // while (!(board.getStatus().hasWinner) && !(board.getStatus().isFull)) {
-    // Change active player
-    // Update active player node
-}
+    const fullReset = () => {
+        playerController.reset();
+        gameboard.reset();
+        screenController.reset();
+    };
 
-GameRunner();
+    return { setupGame, fullReset };
+}();
+
+gameRunner.setupGame();
