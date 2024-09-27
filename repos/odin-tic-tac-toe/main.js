@@ -121,7 +121,7 @@ const screenController = function ScreenController() {
         });
 
         cancelButton.addEventListener('click', () => {
-            startGameButton.classList.toggle('hidden');
+            startGameButton.classList.remove('hidden');
         });
 
         newGameButton.addEventListener('click', startGame);
