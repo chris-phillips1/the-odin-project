@@ -107,25 +107,27 @@ const screenController = function ScreenController() {
     };
 
     const populateDialog = (message) => {
-        const dialog = document.querySelector('dialog');
-        const userMessageDisplay = document.querySelector('.dialog p');
+        const endScreenDialog = document.querySelector('#endScreen');
+        const userMessageDisplay = document.querySelector('#endScreen p');
         const cancelButton = document.querySelector('#cancelButton');
         const newGameButton = document.querySelector('#newGameButton');
+
+        const startGameDialog = document.querySelector('#startScreen');
         const startGameButton = document.querySelector('#startGameButton');
 
         userMessageDisplay.innerText = message;
 
         startGameButton.addEventListener('click', () => {
-            startGameButton.classList.toggle('hidden');
             startGame();
+            startGameDialog.close();
         });
 
         cancelButton.addEventListener('click', () => {
-            startGameButton.classList.remove('hidden');
+            startGameDialog.show();
         });
 
         newGameButton.addEventListener('click', startGame);
-        dialog.showModal();
+        endScreenDialog.showModal();
     }
 
     const startGame = () => {

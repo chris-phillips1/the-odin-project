@@ -38,6 +38,14 @@ button {
     background-color: color-mix(in hsl shorter hue, beige 97%, white 3%);
 }
 
-.hidden {
-    display: none;
+.dialog {
+    background-color: beige;
+    width: 20vw;
+    height: 30vh;
+    margin: auto;
+}
+
+#startScreen {
+    display: flex;
+    flex: 1;
 }
