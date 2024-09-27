@@ -37,3 +37,7 @@ button {
 .locked {
     background-color: color-mix(in hsl shorter hue, beige 97%, white 3%);
 }
+
+.hidden {
+    display: none;
+}

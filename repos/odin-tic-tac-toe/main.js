@@ -106,12 +106,31 @@ const screenController = function ScreenController() {
         })
     };
 
-    const createModal = () => {
-        // dialog
-        // p
-        // div
-        // -button
-        // -button
+    const populateDialog = (message) => {
+        const dialog = document.querySelector('dialog');
+        const userMessageDisplay = document.querySelector('.dialog p');
+        const cancelButton = document.querySelector('#cancelButton');
+        const newGameButton = document.querySelector('#newGameButton');
+        const startGameButton = document.querySelector('#startGameButton');
+
+        userMessageDisplay.innerText = message;
+
+        startGameButton.addEventListener('click', () => {
+            startGameButton.classList.toggle('hidden');
+            startGame();
+        });
+
+        cancelButton.addEventListener('click', () => {
+            startGameButton.classList.toggle('hidden');
+        });
+
+        newGameButton.addEventListener('click', startGame);
+        dialog.showModal();
+    }
+
+    const startGame = () => {
+        gameRunner.fullReset();
+        gameRunner.setupGame();
     }
 
     const initializeBoardEventHandlers = () => {
@@ -135,13 +154,7 @@ const screenController = function ScreenController() {
 
             if (boardStatus.hasWinner || boardStatus.isFull || boardStatus.isTie) {
                 lockBoard();
-                // Create a modal, only do the below on confirmation
-                // On exit, keep the board locked and create a button for starting a new game
-                createModal();
-                setTimeout(() => {
-                    gameRunner.fullReset();
-                    gameRunner.setupGame();
-                }, 5000);
+                populateDialog('test string');
             }
         }
     };
