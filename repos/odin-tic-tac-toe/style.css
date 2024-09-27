@@ -43,9 +43,10 @@ button {
     width: 20vw;
     height: 30vh;
     margin: auto;
+    margin-top: 24vh;
 }
 
-#startScreen {
-    display: flex;
-    flex: 1;
+#startScreen button {
+    width: 100%;
+    height: 100%;
 }
