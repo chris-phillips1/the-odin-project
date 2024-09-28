@@ -201,11 +201,13 @@ const playerController = function PlayerController() {
     return { generatePlayer, toggleActivePlayer, getActivePlayer, reset };
 }();
 
-function Player(token) {
+function Player(token, name) {
     let playerToken = token;
+    let playerName = name;
     const getToken = () => playerToken;
+    const getName = () => playerName;
 
-    return { getToken };
+    return { getToken, getName };
 }
 
 const gameRunner = function GameRunner() {
