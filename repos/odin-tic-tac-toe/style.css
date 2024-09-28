@@ -50,3 +50,25 @@ button {
     width: 100%;
     height: 100%;
 }
+
+#endScreen {
+    padding: 1rem;
+}
+
+#endScreen form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#endScreen form div {
+    display: flex;
+    justify-content: center;
+}
+
+#endScreen form div>* {
+    padding: 0 .5rem;
+    margin: 0 1rem;
+}
