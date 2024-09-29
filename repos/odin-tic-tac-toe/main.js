@@ -91,6 +91,14 @@ const screenController = function ScreenController() {
     const boardNodes = document.querySelectorAll('.board button');
     const startGameDialog = document.querySelector('#startScreen');
     const startGameButton = document.querySelector('#startGameButton');
+    const firstPlayerName = startGameDialog.querySelector('#firstPlayer');
+    const secondPlayerName = startGameDialog.querySelector('#secondPlayer');
+
+    startGameButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        startGame([firstPlayerName.value, secondPlayerName.value]);
+        startGameDialog.close();
+    });
 
     const updateBoardDisplay = (boardArray) => {
         const flatBoard = boardArray.flat();
@@ -109,10 +117,10 @@ const screenController = function ScreenController() {
     };
 
     const showStartGameDialog = () => {
-        startGameDialog.show();
+        startGameDialog.showModal();
     };
 
-    const populateDialog = (message) => {
+    const populateEndGameDialog = (message) => {
         const endScreenDialog = document.querySelector('#endScreen');
         const userMessageDisplay = document.querySelector('#endScreen p');
         const cancelButton = document.querySelector('#cancelButton');
@@ -120,19 +128,17 @@ const screenController = function ScreenController() {
 
         userMessageDisplay.innerText = message;
 
-        startGameButton.addEventListener('click', () => {
-            firstPlayerName = startGameDialog.querySelector('#firstPlayer');
-            secondPlayerName = startGameDialog.querySelector('#secondPlayer');
-
-            startGame([firstPlayerName.value, secondPlayerName.value]);
-            startGameDialog.close();
-        });
-
         cancelButton.addEventListener('click', () => {
-            startGameDialog.show();
+            startGameDialog.showModal();
+            firstPlayerName.value = '';
+            secondPlayerName.value = '';
         });
 
-        newGameButton.addEventListener('click', startGame);
+        newGameButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            endScreenDialog.close();
+            startGame([firstPlayerName.value, secondPlayerName.value]);
+        });
         endScreenDialog.showModal();
     }
 
@@ -164,13 +170,13 @@ const screenController = function ScreenController() {
                 lockBoard();
 
                 if (boardStatus.isTie) {
-                    populateDialog('It\'s a tie!')
+                    populateEndGameDialog('It\'s a tie!')
                 } else {
                     const allPlayers = playerController.getAllPlayers();
                     const winningPlayer = allPlayers.filter((player) => {
                         return player.getToken() === boardStatus.winner;
                     })[0];
-                    populateDialog(winningPlayer.getName() + ' wins!');
+                    populateEndGameDialog(winningPlayer.getName() + ' wins!');
                 }
             }
         }
@@ -180,7 +186,7 @@ const screenController = function ScreenController() {
         boardNodes.forEach((node) => {
             node.innerText = '';
             node.classList.remove('locked');
-        })
+        });
     };
 
     return { updateBoardDisplay, showStartGameDialog, initializeBoardEventHandlers, reset };
