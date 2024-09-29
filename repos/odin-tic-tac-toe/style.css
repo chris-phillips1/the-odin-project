@@ -46,9 +46,14 @@ button {
     margin-top: 24vh;
 }
 
+#startScreen form {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 #startScreen button {
-    width: 100%;
-    height: 100%;
+    grid-column: 1 / 3;
 }
 
 #endScreen {

@@ -89,6 +89,8 @@ const gameboard = function Gameboard() {
 
 const screenController = function ScreenController() {
     const boardNodes = document.querySelectorAll('.board button');
+    const startGameDialog = document.querySelector('#startScreen');
+    const startGameButton = document.querySelector('#startGameButton');
 
     const updateBoardDisplay = (boardArray) => {
         const flatBoard = boardArray.flat();
@@ -106,19 +108,23 @@ const screenController = function ScreenController() {
         })
     };
 
+    const showStartGameDialog = () => {
+        startGameDialog.show();
+    };
+
     const populateDialog = (message) => {
         const endScreenDialog = document.querySelector('#endScreen');
         const userMessageDisplay = document.querySelector('#endScreen p');
         const cancelButton = document.querySelector('#cancelButton');
         const newGameButton = document.querySelector('#newGameButton');
 
-        const startGameDialog = document.querySelector('#startScreen');
-        const startGameButton = document.querySelector('#startGameButton');
-
         userMessageDisplay.innerText = message;
 
         startGameButton.addEventListener('click', () => {
-            startGame();
+            firstPlayerName = startGameDialog.querySelector('#firstPlayer');
+            secondPlayerName = startGameDialog.querySelector('#secondPlayer');
+
+            startGame([firstPlayerName.value, secondPlayerName.value]);
             startGameDialog.close();
         });
 
@@ -130,9 +136,9 @@ const screenController = function ScreenController() {
         endScreenDialog.showModal();
     }
 
-    const startGame = () => {
+    const startGame = (playerNames) => {
         gameRunner.fullReset();
-        gameRunner.setupGame();
+        gameRunner.setupGame(playerNames);
     }
 
     const initializeBoardEventHandlers = () => {
@@ -156,7 +162,16 @@ const screenController = function ScreenController() {
 
             if (boardStatus.hasWinner || boardStatus.isFull || boardStatus.isTie) {
                 lockBoard();
-                populateDialog('test string');
+
+                if (boardStatus.isTie) {
+                    populateDialog('It\'s a tie!')
+                } else {
+                    const allPlayers = playerController.getAllPlayers();
+                    const winningPlayer = allPlayers.filter((player) => {
+                        return player.getToken() === boardStatus.winner;
+                    })[0];
+                    populateDialog(winningPlayer.getName() + ' wins!');
+                }
             }
         }
     };
@@ -168,15 +183,15 @@ const screenController = function ScreenController() {
         })
     };
 
-    return { updateBoardDisplay, initializeBoardEventHandlers, reset };
+    return { updateBoardDisplay, showStartGameDialog, initializeBoardEventHandlers, reset };
 }();
 
 const playerController = function PlayerController() {
     const allPlayers = [];
     let activePlayer;
 
-    const generatePlayer = (token) => {
-        const generatedPlayer = new Player(token);
+    const generatePlayer = (token, name) => {
+        const generatedPlayer = new Player(token, name);
         activePlayer = activePlayer ? activePlayer : generatedPlayer;
 
         allPlayers.push(generatedPlayer);
@@ -192,13 +207,14 @@ const playerController = function PlayerController() {
     };
 
     const getActivePlayer = () => activePlayer;
+    const getAllPlayers = () => allPlayers;
 
     const reset = () => {
         allPlayers.splice(0, allPlayers.length);
         activePlayer = null;
     };
 
-    return { generatePlayer, toggleActivePlayer, getActivePlayer, reset };
+    return { generatePlayer, toggleActivePlayer, getActivePlayer, getAllPlayers, reset };
 }();
 
 function Player(token, name) {
@@ -211,9 +227,14 @@ function Player(token, name) {
 }
 
 const gameRunner = function GameRunner() {
-    const setupGame = () => {
-        playerController.generatePlayer('X');
-        playerController.generatePlayer('O');
+    const setupGame = (playerNames) => {
+        if (playerNames && playerNames.length) {
+            playerController.generatePlayer('X', playerNames[0]);
+            playerController.generatePlayer('O', playerNames[1]);
+        } else {
+            playerController.generatePlayer('X', 'X');
+            playerController.generatePlayer('O', 'O');
+        }
         gameboard.generateBoard();
         screenController.initializeBoardEventHandlers();
     };
@@ -227,4 +248,4 @@ const gameRunner = function GameRunner() {
     return { setupGame, fullReset };
 }();
 
-gameRunner.setupGame();
+screenController.showStartGameDialog();
