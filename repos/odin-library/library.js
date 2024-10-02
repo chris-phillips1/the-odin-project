@@ -1,42 +1,48 @@
 class ScreenController {
 
-    initialize() {
-        const createBookButton = document.getElementById('createBookButton');
-        const tableElement = document.querySelector('table');
+    static createBookButton;
+    static tableElement;
+
+    static initialize() {
+        this.createBookButton = document.getElementById('createBookButton');
+        this.tableElement = document.querySelector('table');
     }
 
-    buildBookDialog() {
+    static buildBookDialog() {
         const createBookDialog = document.getElementById('createBookDialog');
         const createBookForm = createBookDialog.querySelector('form');
         const createBookFormButtons = createBookForm.querySelector('#formButtons');
         const confirmButton = createBookDialog.querySelector("#confirmButton");
     }
 
-    clear() {
-        while (tableElement.firstChild) {
-            tableElement.removeChild(tableElement.firstChild);
+    static clear() {
+        while (this.tableElement.firstChild) {
+            this.tableElement.removeChild(this.tableElement.firstChild);
         }
     }
 
-    display(library) {
+    static display(library) {
         library.forEach((book, rowIndex) => {
-            const bookRow = book.buildRow();
-            book.addControlsToRow(bookRow, rowIndex);
-            tableElement.appendChild(bookRow);
+            const bookRow = book.buildRow(rowIndex);
+            this.tableElement.appendChild(bookRow);
         });
     }
 }
 
 class Library {
-    static myLibrary = [];
+    static library = [];
 
     static add(book) {
-        myLibrary.push(book);
+        this.library.push(book);
+    }
+
+    static remove(index) {
+        this.library.splice(index, 1);
     }
 
     static display() {
         ScreenController.clear();
-        ScreenController.display(this.myLibrary);
+        ScreenController.display(this.library);
     }
 }
 
@@ -46,53 +52,45 @@ class Book {
         this.author = author;
         this.pages = pages;
         this.read = read;
-        //Additional properties needed for associated HTMLElement and row index within the library
     }
 
     toggleRead() {
         this.read = !this.read;
     }
 
-    buildRow() {
-        const bookTitle = document.createElement('td');
-        bookTitle.innerText = this.title;
+    buildRow(index) {
+        const rowElement = document.createElement('tr');
+        const bookPropertyNames = Object.getOwnPropertyNames(this);
 
-        const bookAuthor = document.createElement('td');
-        bookAuthor.innerText = this.author;
+        bookPropertyNames.forEach((bookPropertyName) => {
+            const bookPropertyValue = this[bookPropertyName];
+            const propertyElement = document.createElement('td');
+            propertyElement.innerText = bookPropertyValue;
+            rowElement.appendChild(propertyElement);
+        });
 
-        const bookPages = document.createElement('td');
-        bookPages.innerText = this.pages;
+        this.buildRowControls(rowElement, index);
 
-        const bookRead = document.createElement('td');
-        bookRead.innerText = this.read ? 'Yes' : 'No';
-
-        const bookRow = document.createElement('tr');
-        bookRow.appendChild(bookTitle);
-        bookRow.appendChild(bookAuthor);
-        bookRow.appendChild(bookPages);
-        bookRow.appendChild(bookRead);
-        bookRow.appendChild(updateButtons);
-
-        return bookRow;
+        return rowElement;
     }
 
-    addControlsToRow(rowElement, index) {
+    buildRowControls(rowElement, index) {
         const updateButtons = document.createElement('td');
         const deleteBookButton = document.createElement('button');
         const toggleReadStatusButton = document.createElement('button');
 
         deleteBookButton.innerText = 'Delete';
         deleteBookButton.dataset.bookIndex = index;
-        deleteBookButton.onclick = () => {
-            library.splice(deleteBookButton.dataset.bookIndex, 1);
-            displayBooks();
-        };
+        deleteBookButton.addEventListener('click', () => {
+            Library.remove(deleteBookButton.dataset.bookIndex);
+            Library.display();
+        });
 
         toggleReadStatusButton.innerText = 'Toggle Read';
-        toggleReadStatusButton.onclick = () => {
-            book.toggleRead();
-            displayBooks();
-        };
+        toggleReadStatusButton.addEventListener('click', () => {
+            this.toggleRead();
+            Library.display();
+        });
 
         updateButtons.appendChild(deleteBookButton);
         updateButtons.appendChild(toggleReadStatusButton);
@@ -148,4 +146,7 @@ confirmButton.addEventListener('click', (event) => {
     displayBooks();
 });
 
-buildBookForm();
+// buildBookForm();
+ScreenController.initialize();
+Library.add(new Book('Test', 'Test', 'Test', true));
+Library.display();
