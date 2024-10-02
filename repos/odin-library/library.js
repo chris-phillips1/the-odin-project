@@ -1,11 +1,44 @@
-let myLibrary = [];
-const tableElement = document.querySelector('table');
-const createBookButton = document.getElementById('createBookButton');
+class ScreenController {
 
-const createBookDialog = document.getElementById('createBookDialog');
-const createBookForm = createBookDialog.querySelector('form');
-const createBookFormButtons = createBookForm.querySelector('#formButtons');
-const confirmButton = createBookDialog.querySelector("#confirmButton");
+    initialize() {
+        const createBookButton = document.getElementById('createBookButton');
+        const tableElement = document.querySelector('table');
+    }
+
+    buildBookDialog() {
+        const createBookDialog = document.getElementById('createBookDialog');
+        const createBookForm = createBookDialog.querySelector('form');
+        const createBookFormButtons = createBookForm.querySelector('#formButtons');
+        const confirmButton = createBookDialog.querySelector("#confirmButton");
+    }
+
+    clear() {
+        while (tableElement.firstChild) {
+            tableElement.removeChild(tableElement.firstChild);
+        }
+    }
+
+    display(library) {
+        library.forEach((book, rowIndex) => {
+            const bookRow = book.buildRow();
+            book.addControlsToRow(bookRow, rowIndex);
+            tableElement.appendChild(bookRow);
+        });
+    }
+}
+
+class Library {
+    static myLibrary = [];
+
+    static add(book) {
+        myLibrary.push(book);
+    }
+
+    static display() {
+        ScreenController.clear();
+        ScreenController.display(this.myLibrary);
+    }
+}
 
 class Book {
     constructor(title, author, pages, read) {
@@ -13,35 +46,37 @@ class Book {
         this.author = author;
         this.pages = pages;
         this.read = read;
+        //Additional properties needed for associated HTMLElement and row index within the library
     }
 
     toggleRead() {
         this.read = !this.read;
     }
-}
 
-function addBookToLibrary(book) {
-    myLibrary.push(book);
+    buildRow() {
+        const bookTitle = document.createElement('td');
+        bookTitle.innerText = this.title;
 
-}
+        const bookAuthor = document.createElement('td');
+        bookAuthor.innerText = this.author;
 
-function displayBooks() {
-    while (tableElement.firstChild) {
-        tableElement.removeChild(tableElement.firstChild);
+        const bookPages = document.createElement('td');
+        bookPages.innerText = this.pages;
+
+        const bookRead = document.createElement('td');
+        bookRead.innerText = this.read ? 'Yes' : 'No';
+
+        const bookRow = document.createElement('tr');
+        bookRow.appendChild(bookTitle);
+        bookRow.appendChild(bookAuthor);
+        bookRow.appendChild(bookPages);
+        bookRow.appendChild(bookRead);
+        bookRow.appendChild(updateButtons);
+
+        return bookRow;
     }
 
-    myLibrary.forEach((book, index) => {
-        const bookRow = document.createElement('tr');
-
-        const bookTitle = document.createElement('td');
-        bookTitle.innerText = book.title;
-        const bookAuthor = document.createElement('td');
-        bookAuthor.innerText = book.author;
-        const bookPages = document.createElement('td');
-        bookPages.innerText = book.pages;
-        const bookRead = document.createElement('td');
-        bookRead.innerText = book.read ? 'Yes' : 'No';
-
+    addControlsToRow(rowElement, index) {
         const updateButtons = document.createElement('td');
         const deleteBookButton = document.createElement('button');
         const toggleReadStatusButton = document.createElement('button');
@@ -49,7 +84,7 @@ function displayBooks() {
         deleteBookButton.innerText = 'Delete';
         deleteBookButton.dataset.bookIndex = index;
         deleteBookButton.onclick = () => {
-            myLibrary.splice(deleteBookButton.dataset.bookIndex, 1);
+            library.splice(deleteBookButton.dataset.bookIndex, 1);
             displayBooks();
         };
 
@@ -61,14 +96,8 @@ function displayBooks() {
 
         updateButtons.appendChild(deleteBookButton);
         updateButtons.appendChild(toggleReadStatusButton);
-
-        bookRow.appendChild(bookTitle);
-        bookRow.appendChild(bookAuthor);
-        bookRow.appendChild(bookPages);
-        bookRow.appendChild(bookRead);
-        bookRow.appendChild(updateButtons);
-        tableElement.appendChild(bookRow);
-    });
+        rowElement.appendChild(updateButtons);
+    }
 }
 
 function createFormField(name, type, id) {
