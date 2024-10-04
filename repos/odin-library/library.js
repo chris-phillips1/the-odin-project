@@ -1,5 +1,4 @@
 class ScreenController {
-
     static createBookButton;
     static tableElement;
 
@@ -8,11 +7,10 @@ class ScreenController {
         this.tableElement = document.querySelector('table');
     }
 
-    static buildBookDialog() {
-        const createBookDialog = document.getElementById('createBookDialog');
-        const createBookForm = createBookDialog.querySelector('form');
-        const createBookFormButtons = createBookForm.querySelector('#formButtons');
-        const confirmButton = createBookDialog.querySelector("#confirmButton");
+    static setupEventHandlers() {
+        createBookButton.addEventListener('click', () => {
+            createBookDialog.showModal();
+        });
     }
 
     static clear() {
@@ -43,6 +41,13 @@ class Library {
     static display() {
         ScreenController.clear();
         ScreenController.display(this.library);
+    }
+
+    static buildDialog() {
+        const createBookDialog = document.getElementById('createBookDialog');
+        const createBookForm = createBookDialog.querySelector('form');
+        const createBookFormButtons = createBookForm.querySelector('#formButtons');
+        const confirmButton = createBookDialog.querySelector("#confirmButton");
     }
 }
 
@@ -119,10 +124,6 @@ function buildBookForm() {
     createFormField('Read:', 'checkbox', 'readCheckboxField');
 }
 
-createBookButton.addEventListener('click', () => {
-    createBookDialog.showModal();
-});
-
 cancelButton.addEventListener('click', () => {
     createBookDialog.close();
 })
@@ -148,5 +149,6 @@ confirmButton.addEventListener('click', (event) => {
 
 // buildBookForm();
 ScreenController.initialize();
+Library.buildDialog();
 Library.add(new Book('Test', 'Test', 'Test', true));
 Library.display();
