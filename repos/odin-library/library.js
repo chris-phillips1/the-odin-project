@@ -11,6 +11,29 @@ class ScreenController {
         createBookButton.addEventListener('click', () => {
             createBookDialog.showModal();
         });
+
+        cancelButton.addEventListener('click', () => {
+            createBookDialog.close();
+        })
+        
+        confirmButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            createBookDialog.close();
+        
+            let title = document.getElementById('titleTextField');
+            let author = document.getElementById('authorTextField');
+            let pages = document.getElementById('pagesNumberField');
+            let read = document.getElementById('readCheckboxField');
+        
+            addBookToLibrary(new Book(title.value, author.value, pages.value, read.checked));
+        
+            title.value = null;
+            author.value = null;
+            pages.value = null;
+            read.checked = false;
+        
+            displayBooks();
+        });
     }
 
     static clear() {
@@ -123,29 +146,6 @@ function buildBookForm() {
     createFormField('Pages:', 'number', 'pagesNumberField');
     createFormField('Read:', 'checkbox', 'readCheckboxField');
 }
-
-cancelButton.addEventListener('click', () => {
-    createBookDialog.close();
-})
-
-confirmButton.addEventListener('click', (event) => {
-    event.preventDefault();
-    createBookDialog.close();
-
-    let title = document.getElementById('titleTextField');
-    let author = document.getElementById('authorTextField');
-    let pages = document.getElementById('pagesNumberField');
-    let read = document.getElementById('readCheckboxField');
-
-    addBookToLibrary(new Book(title.value, author.value, pages.value, read.checked));
-
-    title.value = null;
-    author.value = null;
-    pages.value = null;
-    read.checked = false;
-
-    displayBooks();
-});
 
 // buildBookForm();
 ScreenController.initialize();
