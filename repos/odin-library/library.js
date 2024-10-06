@@ -1,10 +1,20 @@
 class ScreenController {
-    static createBookButton;
-    static tableElement;
+    static createBookButton; 
+    static tableElement; 
+    static createBookDialog; 
+    static createBookForm; 
+    static createBookFormButtons; 
+    static confirmButton;
 
     static initialize() {
-        this.createBookButton = document.getElementById('createBookButton');
-        this.tableElement = document.querySelector('table');
+        createBookButton = document.getElementById('createBookButton');
+        tableElement = document.querySelector('table');
+
+        createBookDialog = document.getElementById('createBookDialog');
+        createBookForm = createBookDialog.querySelector('form');
+        createBookFormButtons = createBookForm.querySelector('#formButtons');
+        cancelButton = createBookDialog.querySelector('#cancelButton');
+        confirmButton = createBookDialog.querySelector("#confirmButton");
     }
 
     static setupEventHandlers() {
@@ -19,19 +29,8 @@ class ScreenController {
         confirmButton.addEventListener('click', (event) => {
             event.preventDefault();
             createBookDialog.close();
-        
-            let title = document.getElementById('titleTextField');
-            let author = document.getElementById('authorTextField');
-            let pages = document.getElementById('pagesNumberField');
-            let read = document.getElementById('readCheckboxField');
-        
-            addBookToLibrary(new Book(title.value, author.value, pages.value, read.checked));
-        
-            title.value = null;
-            author.value = null;
-            pages.value = null;
-            read.checked = false;
-        
+            Library.addBookFromForm(createBookForm);
+
             displayBooks();
         });
     }
@@ -66,11 +65,11 @@ class Library {
         ScreenController.display(this.library);
     }
 
-    static buildDialog() {
-        const createBookDialog = document.getElementById('createBookDialog');
-        const createBookForm = createBookDialog.querySelector('form');
-        const createBookFormButtons = createBookForm.querySelector('#formButtons');
-        const confirmButton = createBookDialog.querySelector("#confirmButton");
+    static addBookFromForm(formNode) {
+        let formInputs = formNode.children;
+        formInputs.forEach((formInput) => {
+            this.add(new Book(formInput.title, formInput.author, formInput.pages, formInput.read));
+        })
     }
 }
 
@@ -147,8 +146,6 @@ function buildBookForm() {
     createFormField('Read:', 'checkbox', 'readCheckboxField');
 }
 
-// buildBookForm();
 ScreenController.initialize();
-Library.buildDialog();
 Library.add(new Book('Test', 'Test', 'Test', true));
 Library.display();
