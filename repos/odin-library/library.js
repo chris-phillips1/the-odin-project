@@ -7,32 +7,43 @@ class ScreenController {
     static confirmButton;
 
     static initialize() {
-        createBookButton = document.getElementById('createBookButton');
-        tableElement = document.querySelector('table');
+        this.createBookButton = document.getElementById('createBookButton');
+        this.tableElement = document.querySelector('table');
 
-        createBookDialog = document.getElementById('createBookDialog');
-        createBookForm = createBookDialog.querySelector('form');
-        createBookFormButtons = createBookForm.querySelector('#formButtons');
-        cancelButton = createBookDialog.querySelector('#cancelButton');
-        confirmButton = createBookDialog.querySelector("#confirmButton");
+        this.createBookDialog = document.getElementById('createBookDialog');
+        this.createBookForm = this.createBookDialog.querySelector('form');
+        this.createBookFormButtons = this.createBookForm.querySelector('#formButtons');
+        this.cancelButton = this.createBookDialog.querySelector('#cancelButton');
+        this.confirmButton = this.createBookDialog.querySelector("#confirmButton");
+        this.setupEventHandlers();
     }
 
     static setupEventHandlers() {
         createBookButton.addEventListener('click', () => {
-            createBookDialog.showModal();
+            this.createBookDialog.showModal();
         });
 
         cancelButton.addEventListener('click', () => {
-            createBookDialog.close();
+            this.createBookDialog.close();
         })
         
         confirmButton.addEventListener('click', (event) => {
             event.preventDefault();
-            createBookDialog.close();
-            Library.addBookFromForm(createBookForm);
+            this.createBookDialog.close();
 
-            displayBooks();
+            this.addBookFromForm();
+            Library.display();
         });
+    }
+
+    static addBookFromForm() {
+        this.createBookForm.childNodes.forEach((formItem) => {
+            console.log(formItem);
+        });
+    }
+
+    static addItemToForm(itemToAdd) {
+        this.createBookForm.insertBefore(itemToAdd, this.createBookFormButtons);
     }
 
     static clear() {
@@ -63,13 +74,6 @@ class Library {
     static display() {
         ScreenController.clear();
         ScreenController.display(this.library);
-    }
-
-    static addBookFromForm(formNode) {
-        let formInputs = formNode.children;
-        formInputs.forEach((formInput) => {
-            this.add(new Book(formInput.title, formInput.author, formInput.pages, formInput.read));
-        })
     }
 }
 
@@ -136,7 +140,7 @@ function createFormField(name, type, id) {
 
     formLabel.appendChild(formField);
     formItem.appendChild(formLabel);
-    createBookForm.insertBefore(formItem, createBookFormButtons);
+    ScreenController.addItemToForm(formItem);
 }
 
 function buildBookForm() {
@@ -147,5 +151,6 @@ function buildBookForm() {
 }
 
 ScreenController.initialize();
+buildBookForm();
 Library.add(new Book('Test', 'Test', 'Test', true));
 Library.display();
