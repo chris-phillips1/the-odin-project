@@ -1,9 +1,9 @@
 class ScreenController {
-    static createBookButton; 
-    static tableElement; 
-    static createBookDialog; 
-    static createBookForm; 
-    static createBookFormButtons; 
+    static createBookButton;
+    static tableElement;
+    static createBookDialog;
+    static createBookForm;
+    static createBookFormButtons;
     static confirmButton;
 
     static initialize() {
@@ -16,6 +16,7 @@ class ScreenController {
         this.cancelButton = this.createBookDialog.querySelector('#cancelButton');
         this.confirmButton = this.createBookDialog.querySelector("#confirmButton");
         this.setupEventHandlers();
+        this.buildBookCreationForm();
     }
 
     static setupEventHandlers() {
@@ -26,24 +27,76 @@ class ScreenController {
         cancelButton.addEventListener('click', () => {
             this.createBookDialog.close();
         })
-        
+
         confirmButton.addEventListener('click', (event) => {
             event.preventDefault();
             this.createBookDialog.close();
 
             this.addBookFromForm();
+            this.clearForm();
             Library.display();
         });
     }
 
+    static buildBookCreationForm() {
+        this.createFormField('Title:', 'text', 'titleTextField');
+        this.createFormField('Author:', 'text', 'authorTextField');
+        this.createFormField('Pages:', 'number', 'pagesNumberField');
+        this.createFormField('Read:', 'checkbox', 'readCheckboxField');
+    }
+
+    static createFormField(name, type, id) {
+        const formItem = document.createElement('p');
+        const formLabel = document.createElement('label');
+        const formField = document.createElement('input');
+
+        formLabel.innerText = name;
+        formField.type = type;
+        formField.id = id;
+
+        formItem.appendChild(formLabel);
+        formItem.appendChild(formField);
+        this.addItemToForm(formItem);
+    }
+
     static addBookFromForm() {
-        this.createBookForm.childNodes.forEach((formItem) => {
-            console.log(formItem);
+        const bookFields = {};
+        const formItems = this.createBookForm.querySelectorAll('input');
+        formItems.forEach((formItem) => {
+            const formItemValue = formItem.value;
+
+            switch (formItem.id) {
+                case 'titleTextField':
+                    bookFields.title = formItemValue;
+                    break;
+                case 'authorTextField':
+                    bookFields.author = formItemValue;
+                    break;
+                case 'pagesNumberField':
+                    bookFields.pages = formItemValue;
+                    break;
+                case 'readCheckboxField':
+                    bookFields.read = formItem.checked;
+                    break;
+            }
         });
+
+        Library.add(new Book(bookFields.title, bookFields.author, bookFields.pages, bookFields.read));
     }
 
     static addItemToForm(itemToAdd) {
         this.createBookForm.insertBefore(itemToAdd, this.createBookFormButtons);
+    }
+
+    static clearForm() {
+        const formNodes = this.createBookForm.querySelectorAll('input');
+        formNodes.forEach((node) => {
+            if (node.type === 'checkbox') {
+                node.checked = false;
+            } else {
+                node.value = '';
+            }
+        });
     }
 
     static clear() {
@@ -129,28 +182,5 @@ class Book {
     }
 }
 
-function createFormField(name, type, id) {
-    const formItem = document.createElement('p');
-    const formLabel = document.createElement('label');
-    const formField = document.createElement('input');
-
-    formLabel.innerText = name;
-    formField.type = type;
-    formField.id = id;
-
-    formLabel.appendChild(formField);
-    formItem.appendChild(formLabel);
-    ScreenController.addItemToForm(formItem);
-}
-
-function buildBookForm() {
-    createFormField('Title:', 'text', 'titleTextField');
-    createFormField('Author:', 'text', 'authorTextField');
-    createFormField('Pages:', 'number', 'pagesNumberField');
-    createFormField('Read:', 'checkbox', 'readCheckboxField');
-}
-
 ScreenController.initialize();
-buildBookForm();
-Library.add(new Book('Test', 'Test', 'Test', true));
 Library.display();
