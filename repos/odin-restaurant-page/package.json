@@ -9,6 +9,9 @@
   "license": "ISC",
   "description": "Restaurant Page Project for The Odin Project",
   "devDependencies": {
-    "webpack": "^5.95.0"
+    "html-webpack-plugin": "^5.6.0",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
   }
 }
