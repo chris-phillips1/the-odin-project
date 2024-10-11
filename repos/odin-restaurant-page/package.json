@@ -1,0 +1,14 @@
+{
+  "name": "odin-restaurant-page",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Phillips",
+  "license": "ISC",
+  "description": "Restaurant Page Project for The Odin Project",
+  "devDependencies": {
+    "webpack": "^5.95.0"
+  }
+}
