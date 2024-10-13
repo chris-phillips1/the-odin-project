@@ -1,7 +1,8 @@
 import './styles.css';
-import createHomeTab from './homeTab.js'
+import createHomeTab from './homeTab.js';
+import createMenuTab from './menuTab.js';
 
 const contentDiv = document.querySelector('#content');
-const homeDiv = createHomeTab();
+const menuDiv = createMenuTab();
 
-contentDiv.appendChild(homeDiv);
+contentDiv.appendChild(menuDiv);
