@@ -1,3 +1,7 @@
 import './styles.css';
+import createHomeTab from './homeTab.js'
 
-console.log('Hello world');
+const contentDiv = document.querySelector('#content');
+const homeDiv = createHomeTab();
+
+contentDiv.appendChild(homeDiv);
