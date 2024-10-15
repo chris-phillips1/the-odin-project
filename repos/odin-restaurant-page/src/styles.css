@@ -29,3 +29,8 @@ body {
 #homeTab p {
     grid-column: 2 / 3;
 }
+
+#menuTab {
+    display: grid;
+    justify-content: center;
+}
